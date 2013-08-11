@@ -18,6 +18,10 @@ _start:
 /* stack setup */
 	ldr sp, =8*1024
 
+	bl led1_on
+	bl led2_on
+	bl led3_on
+	bl led4_on
 	bl led_loop
 
 halt:
