@@ -23,7 +23,7 @@ _start:
 	bl led3_on
 	bl led4_on
 	
-	bl clock_init	/* clock init */
+	bl clock_init  	/* clock init */
 	
 	bl led_loop
 

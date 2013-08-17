@@ -26,13 +26,20 @@ loop:
 
 
 	/* set DIV */
-#define PCLK_RATIO	1
+#define PCLK_RATIO	3
 #define HCLKX2_RATIO	1
-#define HCLK_RATIO	3
-#define MPLL_RATIO	0
+#define HCLK_RATIO	1
+#define MPLL_RATIO	1
 #define ARM_RATIO	0
 #define CLK_DIV0_VAL ((PCLK_RATIO << 12) | (HCLKX2_RATIO << 9) | (HCLK_RATIO << 8) | (MPLL_RATIO << 4) | (ARM_RATIO << 0))
 	ldr r0, =0x7E00F020
+	ldr r1, [r0]
+	bic r1, r1, #0x30000
+	bic r1,	r1, #0xff00
+	bic r1, r1, #0xff
+	ldr r2, =CLK_DIV0_VAL
+	orr r1, r1, r2
+	str r1, [r0]
 
 
 	/* set APLL 533M */
@@ -54,6 +61,8 @@ loop:
 	ldr r0, =0x7E00F01C
 	mov r1, #0x3
 	str r1, [r0]
+
+mov	r1, #0x10000
 
 	/* return */
 	mov pc, lr

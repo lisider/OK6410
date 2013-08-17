@@ -5,3 +5,4 @@ Bare board procedures of OK6410
 
 include:
 	led
+	clock
