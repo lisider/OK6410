@@ -17,14 +17,15 @@ _start:
 /* stack setup */
 	ldr sp, =8*1024
 
-	bl led1_on
-	bl led2_on
-	bl led3_on
-	bl led4_on
 	
 	bl clock_init  	/* clock init */
-	
-	bl led_loop
+//	bl led1_on
+//	bl led2_on
+//	bl led3_on
+//	bl led4_on
+	bl uart_init
+	bl uart_loop
+//	bl led_loop	
 
 halt:
 	b halt	

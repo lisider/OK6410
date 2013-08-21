@@ -16,4 +16,60 @@
 #define uintsp0		*((volatile unsigned long *)0x7F005034)
 #define uintm0		*((volatile unsigned long *)0x7F005038)
 
+#define gpacon		(*((volatile unsigned short *)0x7F008000))
 
+void uart_init()
+{
+	gpacon &= ~0xff;
+	gpacon |= 0x22;
+
+	ulcon0 = 0x3;  //set the word length is 8-bit
+	ucon0 = 0x805; //select clock PCLK
+	
+	ufcon0 = 0x1; //enable fifo mode
+
+	ubrdiv0 = 0x23;
+	udivslot0 = 0x1;
+}
+
+void put_c(unsigned char ch)
+{
+	while (ufstat0 & (1<<14));
+	utxh0 = ch;
+
+}
+
+unsigned char get_c()
+{
+	while (!(ufstat0 & 0x3f));
+	return urxh0;
+
+}
+
+void put_s(unsigned char *str)
+{
+	int i = 0;
+	while(str[i] != '\0')
+	{
+		put_c(str[i++]);
+	}
+
+}
+
+
+void uart_loop()
+{
+	unsigned char ch;
+	put_s("Welcome use uart!\n\r");
+
+	
+	for(;;)
+	{
+		ch = get_c();
+//		put_c(ch);
+		if(ch == '\r')
+			put_s("\n\r");
+		else
+			put_c(ch);
+	}
+}

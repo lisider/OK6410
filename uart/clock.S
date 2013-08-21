@@ -41,6 +41,11 @@ loop:
 	orr r1, r1, r2
 	str r1, [r0]
 
+	/* set uart clock EXT_UCLK1 */
+/*	ldr r0, =0x7E00F028
+	ldr r1, =0x30000
+	str r1, [r0]
+*/
 
 	/* set APLL 533M */
 
@@ -59,10 +64,14 @@ loop:
 	
 	/* select PLL  */
 	ldr r0, =0x7E00F01C
-	mov r1, #0x3
+	ldr r1, =0x2003
 	str r1, [r0]
-
+/*
 mov	r1, #0x10000
-
+wait:
+	sub r1, r1, #1
+	cmp r1, #0
+	bne wait
+*/
 	/* return */
 	mov pc, lr
