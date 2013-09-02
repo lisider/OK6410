@@ -13,12 +13,19 @@ _start:
 	mov r1, #0
 	str r1, [r0]
 
+	ldr sp, =8*1024
+	bl clock_init
+	bl sdram_init
+
+
 /* reload code */
 	adr r0, _start
 	ldr r1, =_start
 	ldr r2, =bss_start
 	cmp r0, r1
 	beq clear_bss
+	
+
 
 reload_loop:
 	ldr r3, [r0], #0x4
@@ -46,16 +53,20 @@ reload_end:
 
 
 /* stack setup */
-	ldr sp, =8*1024
+	ldr sp, =0x51000000
 
 	
-	bl clock_init  	/* clock init */
+//	bl clock_init  	/* clock init */
+//	bl sdram_init
+
+
+
 //	bl led1_on
-//	bl led2_on
-//	bl led3_on
-//	bl led4_on
-//	bl uart_init
-//	bl uart_loop
+	bl led2_on
+	bl led3_on
+	bl led4_on
+	bl uart_init	
+	bl uart_loop
 	bl led_loop	
 
 halt:
