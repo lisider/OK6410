@@ -7,3 +7,5 @@ include:
 	led
 	clock
 	uart
+	sdram
+	nand

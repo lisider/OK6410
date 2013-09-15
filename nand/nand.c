@@ -8,8 +8,8 @@
 
 void nand_init(void)
 {
-	MEM_SYS_CFG &= ~(1<<1);
-	
+//	MEM_SYS_CFG &= ~(1<<1);
+		
 #define TACLS     5
 #define TWRPH0    5
 #define TWRPH1    5
@@ -18,7 +18,17 @@ void nand_init(void)
 
 	/* enable nand flash controller */
 	NFCONT |= 1;
+	NFCONT &= ~(1<<16);
 
+}
+
+void nand_addr(unsigned int addr)
+{
+	NFADDR = (addr & 0xff);
+	NFADDR = ((addr >> 8) & 0xf);
+	NFADDR = ((addr >> 12) & 0xff);
+	NFADDR = ((addr >> 20) & 0xff);
+	NFADDR = ((addr >> 28) & 0xff);
 }
 
 void print_id(void)
@@ -32,16 +42,7 @@ void print_id(void)
 	NFCMMD = 0x90;
 	NFADDR = 0x00;
 	while((NFSTAT & 0x1) == 0);
-/*
-	ch[0] = NFDATA;
-	ch[1] = NFDATA;
-	ch[2] = NFDATA;
-	ch[3] = NFDATA;
-	ch[4] = NFDATA;
-	ch[5] = NFDATA;
-*/	
 
-	
 	for(i = 0; i < 6; i++)
 	{		
 		ch = NFDATA;
@@ -52,4 +53,67 @@ void print_id(void)
 	NFCONT |= (1 << 1);
 }
 
+void nand_erase(unsigned int addr, unsigned int len)
+{
+	int i;
+	len = len / (4096 * 128) + 1 ;
 
+	for(i = 0; i < len; i++)
+	{
+		addr += 4096*128*i;
+		NFCONT &= ~(1 << 1);
+		NFCMMD = 0x60;
+		NFADDR = ((addr >> 12) & 0xff);
+        	NFADDR = ((addr >> 20) & 0xff);
+        	NFADDR = ((addr >> 28) & 0xff);
+		NFCMMD = 0xd0;
+		while((NFSTAT & 0x1) == 0);
+		NFCONT |= (1 << 1);
+	}
+	
+}
+
+void nand_write(unsigned int addr, unsigned char *str)
+{
+	int i;
+
+	nand_erase(addr, 1);
+
+	NFCONT &= ~(1 << 1);
+        NFCMMD = 0x80;
+	nand_addr(addr);
+	
+	for(i = 0; str[i] != '\0'; i++)
+		NFDATA = str[i];
+	NFDATA = '\0';
+
+	NFCMMD = 0x10;
+	while((NFSTAT & 0x1) == 0);
+	NFCONT |= (1 << 1);
+}
+
+void nand_read(unsigned int addr)
+{
+	int i;
+
+	unsigned char str[30];
+	NFCONT &= ~(1 << 1);
+	
+	NFCMMD = 0x00;
+	nand_addr(addr);
+	NFCMMD = 0x30;
+	while((NFSTAT & 0x1) == 0);
+	
+	str[0] = NFDATA;
+	for(i = 1; str[i-1] != '\0'; i++)
+                str[i] = NFDATA;
+	NFCONT |= (1 << 1);
+	
+	put_s(str);
+}
+
+void nand_test()
+{
+	nand_write(0xff000000, "Welcome ddddddddd to here!");
+	nand_read(0xff000000);
+}
