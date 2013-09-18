@@ -6,6 +6,8 @@
 #define NFDATA          (*((volatile unsigned char *)0x70200010))
 #define NFSTAT          (*((volatile unsigned long *)0x70200028))
 
+typedef unsigned int u32;
+
 void nand_init(void)
 {
 //	MEM_SYS_CFG &= ~(1<<1);
@@ -22,7 +24,7 @@ void nand_init(void)
 
 }
 
-void nand_addr(unsigned int addr)
+void nand_addr(u32 addr)
 {
 	NFADDR = (addr & 0xff);
 	NFADDR = ((addr >> 8) & 0xf);
@@ -53,7 +55,7 @@ void print_id(void)
 	NFCONT |= (1 << 1);
 }
 
-void nand_erase(unsigned int addr, unsigned int len)
+void nand_erase(u32 addr, u32 len)
 {
 	int i;
 	len = len / (4096 * 128) + 1 ;
@@ -73,47 +75,51 @@ void nand_erase(unsigned int addr, unsigned int len)
 	
 }
 
-void nand_write(unsigned int addr, unsigned char *str)
+void nand_write_addr(u32 page, u32 page_offset)
+{
+	NFADDR = page_offset & 0xff;
+	NFADDR = (page_offset >> 8) & 0xf;
+	NFADDR = page & 0xff;
+	NFADDR = (page >> 8) & 0xff;
+	NFADDR = (page >> 16) & 0xff;
+}
+
+void nand_page_write(u32 page, u32 page_offset, unsigned char *data, u32 len)
 {
 	int i;
-
-	nand_erase(addr, 1);
 
 	NFCONT &= ~(1 << 1);
         NFCMMD = 0x80;
-	nand_addr(addr);
+	nand_write_addr(page, page_offset);
+	for(i = 0; i < len; i++)
+		NFDATA = data[i];
 	
-	for(i = 0; str[i] != '\0'; i++)
-		NFDATA = str[i];
-	NFDATA = '\0';
-
 	NFCMMD = 0x10;
-	while((NFSTAT & 0x1) == 0);
-	NFCONT |= (1 << 1);
+        while((NFSTAT & 0x1) == 0);
+        NFCONT |= (1 << 1);
 }
 
-void nand_read(unsigned int addr)
+void copy_from_dram_to_nand(u32 dram_addr, u32 nand_addr, u32 len)
 {
-	int i;
+	u32 page, page_offset;
+	u32 count = 0, write_size = 0;
+	
+	page = nand_addr / 4096;
+	page_offset = nand_addr & ((page <= 4) ? 0x7ff : 0xfff);
 
-	unsigned char str[30];
-	NFCONT &= ~(1 << 1);
-	
-	NFCMMD = 0x00;
-	nand_addr(addr);
-	NFCMMD = 0x30;
-	while((NFSTAT & 0x1) == 0);
-	
-	str[0] = NFDATA;
-	for(i = 1; str[i-1] != '\0'; i++)
-                str[i] = NFDATA;
-	NFCONT |= (1 << 1);
-	
-	put_s(str);
+	while(count < len)
+	{
+		if(page <= 4)
+			write_size = (len - count) > 2048 ? 2048 : (len - count);
+		else
+			write_size = (len - count) > 4096 ? 4096 : (len - count);
+
+		nand_page_write(page, page_offset, (unsigned char *)dram_addr, write_size);
+		page_offset = 0;
+		dram_addr += write_size;
+		count += write_size;
+	}
+
 }
 
-void nand_test()
-{
-	nand_write(0xff000000, "Welcome ddddddddd to here!");
-	nand_read(0xff000000);
-}
+

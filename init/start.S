@@ -22,7 +22,6 @@ _start:
 	bl uart_init
 	bl nand_init
 	bl uart_maner
-	bl nand_test
 	bl uart_loop	
 
 halt:
