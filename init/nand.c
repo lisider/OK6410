@@ -24,37 +24,6 @@ void nand_init(void)
 
 }
 
-void nand_addr(u32 addr)
-{
-	NFADDR = (addr & 0xff);
-	NFADDR = ((addr >> 8) & 0xf);
-	NFADDR = ((addr >> 12) & 0xff);
-	NFADDR = ((addr >> 20) & 0xff);
-	NFADDR = ((addr >> 28) & 0xff);
-}
-
-void print_id(void)
-{
-	unsigned char ch;
-	int i;
-
-	NFCONT &= ~(1 << 1);
-	NFCMMD = 0xff;
-	while((NFSTAT & 0x1) == 0);
-	NFCMMD = 0x90;
-	NFADDR = 0x00;
-	while((NFSTAT & 0x1) == 0);
-
-	for(i = 0; i < 6; i++)
-	{		
-		ch = NFDATA;
-		put_c((ch >> 4) + (((ch >> 4) > 9) ? 55 : 48));
-		put_c((ch & 0xf) +(((ch & 0xf) > 9) ? 55 : 48));
-		put_c(' ');
-	}
-	NFCONT |= (1 << 1);
-}
-
 void nand_erase(u32 addr, u32 len)
 {
 	int i;
@@ -109,17 +78,23 @@ void copy_from_dram_to_nand(u32 dram_addr, u32 nand_addr, u32 len)
 
 	while(count < len)
 	{
-		if(page <= 4)
+		if(page <= 4){
 			write_size = (len - count) > 2048 ? 2048 : (len - count);
-		else
+			write_size = ((write_size + page_offset) > 2048) ? (2048 - page_offset)  : write_size;
+		}
+		else {
 			write_size = (len - count) > 4096 ? 4096 : (len - count);
+			write_size = ((write_size + page_offset) > 4096) ? (4096 - page_offset) : write_size;
+		}
+
+		
 
 		nand_page_write(page, page_offset, (unsigned char *)dram_addr, write_size);
 		page_offset = 0;
 		dram_addr += write_size;
 		count += write_size;
+		page++;
 	}
 
 }
-
 

@@ -19,10 +19,9 @@ _start:
 
 	
 	bl clock_init  	/* clock init */
+	bl sdram_init
 	bl uart_init
 	bl nand_init
-	bl uart_maner
-	bl uart_loop	
-
+	bl main
 halt:
 	b halt	

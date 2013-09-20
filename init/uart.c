@@ -56,24 +56,4 @@ void put_s(unsigned char *str)
 
 }
 
-void uart_maner()
-{
 
-	put_s("Welcome use uart!\n\r");
-
-}
-void uart_loop()
-{
-	unsigned char ch;
-
-	
-	for(;;)
-	{
-		ch = get_c();
-//		put_c(ch);
-		if(ch == '\r')
-			put_s("\n\r");
-		else
-			put_c(ch);
-	}
-}
