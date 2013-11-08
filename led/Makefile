@@ -6,7 +6,7 @@ led.bin: start.o led.o
 start.o : start.S
 	arm-linux-gcc -o start.o start.S -c
 led.o : led.c
-	arm-linux-gcc -o led.o led.c -c
+	arm-linux-gcc -o led.o led.c -c -nostdlib
 
 clean:
 	rm  -f *.o led.elf led.bin led.dis
