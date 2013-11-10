@@ -1,1 +1,0 @@
-/home/wanli/OK6410/uboot/drivers/mtd/nand/s3c64xx.c

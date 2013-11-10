@@ -1,1 +1,0 @@
-/home/wanli/OK6410/uboot/board/samsung/ok6410/lowlevel_init.S

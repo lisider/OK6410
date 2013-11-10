@@ -1,1 +1,0 @@
-/home/wanli/OK6410/uboot/arch/arm/cpu/arm1176/s3c64xx/cpu_init.S
