@@ -759,6 +759,25 @@ smdk6400_config	:	unconfig
 #########################################################################
 #########################################################################
 
+#########################################################################
+##OK6410
+#########################################################################
+ok6410_noUSB_config	\
+ok6410_config	:	unconfig
+	@mkdir -p $(obj)include $(obj)board/samsung/ok6410
+	@mkdir -p $(obj)nand_spl/board/samsung/ok6410
+	@echo "#define CONFIG_NAND_U_BOOT" > $(obj)include/config.h
+	@echo "CONFIG_NAND_U_BOOT = y" >> $(obj)include/config.mk
+	@if [ -z "$(findstring ok6410_noUSB_config,$@)" ]; then			\
+		echo "RAM_TEXT = 0x5fe00000" >> $(obj)board/samsung/ok6410/config.tmp;\
+	else										\
+		echo "RAM_TEXT = 0xcfe00000" >> $(obj)board/samsung/ok6410/config.tmp;\
+	fi
+	@$(MKCONFIG) ok6410 arm arm1176 ok6410 samsung s3c64xx
+	@echo "CONFIG_NAND_U_BOOT = y" >> $(obj)include/config.mk
+#########################################################################
+#########################################################################
+
 clean:
 	@rm -f $(obj)examples/standalone/82559_eeprom			  \
 	       $(obj)examples/standalone/atmel_df_pow2			  \
