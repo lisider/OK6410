@@ -1,0 +1,1 @@
+/home/wanli/OK6410/uboot/board/samsung/ok6410/ok6410_nand_spl.c

@@ -1,0 +1,1 @@
+/home/wanli/OK6410/uboot/nand_spl/nand_boot.c

@@ -1,0 +1,1 @@
+/home/wanli/OK6410/uboot/arch/arm/cpu/arm1176/start.S

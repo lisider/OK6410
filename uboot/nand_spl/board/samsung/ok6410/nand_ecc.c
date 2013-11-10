@@ -1,0 +1,1 @@
+/home/wanli/OK6410/uboot/drivers/mtd/nand/nand_ecc.c
