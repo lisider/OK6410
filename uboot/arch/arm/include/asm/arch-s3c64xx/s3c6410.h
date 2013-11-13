@@ -819,7 +819,8 @@
  */
 #define DMC1_MEM_CFG	0x00010012	/* burst 4, 13-bit row, 10-bit col */
 #define DMC1_MEM_CFG2	0xB45
-#define DMC1_CHIP0_CFG	0x150F8		/* 0x5000_0000~0x57ff_ffff (128 MiB) */
+//#define DMC1_CHIP0_CFG	0x150F8		/* 0x5000_0000~0x57ff_ffff (128 MiB) */
+#define DMC1_CHIP0_CFG	0x1ff00
 #define DMC_DDR_32_CFG	0x0 		/* 32bit, DDR */
 
 /* Memory Parameters */
@@ -839,8 +840,8 @@
  * mDDR memory configuration
  */
 
-#define NS_TO_CLK(t)		((STARTUP_HCLK / 1000 * (t) - 1) / 1000000)
-
+//#define NS_TO_CLK(t)		((STARTUP_HCLK / 1000 * (t) - 1) / 1000000)
+#define NS_TO_CLK(t)		(t/( 1000000000/STARTUP_HCLK)+1)
 #define DMC_DDR_BA_EMRS 	2
 #define DMC_DDR_MEM_CASLAT	3
 /* 6   Set Cas Latency to 3 */
@@ -850,27 +851,27 @@
 /* Min 2 tck */
 #define DMC_DDR_t_MRD		2
 /* 7, Min 45ns */
-#define DMC_DDR_t_RAS		(NS_TO_CLK(DDR_tRAS) + 1)
+#define DMC_DDR_t_RAS		(NS_TO_CLK(DDR_tRAS))
 /* 10, Min 67.5ns */
-#define DMC_DDR_t_RC		(NS_TO_CLK(DDR_tRC) + 1)
+#define DMC_DDR_t_RC		(NS_TO_CLK(DDR_tRC))
 /* 4,5(TRM), Min 22.5ns */
-#define DMC_DDR_t_RCD		(NS_TO_CLK(DDR_tRCD) + 1)
+#define DMC_DDR_t_RCD		(NS_TO_CLK(DDR_tRCD))
 #define DMC_DDR_schedule_RCD	((DMC_DDR_t_RCD - 3) << 3)
 /* 11,18(TRM) Min 80ns */
-#define DMC_DDR_t_RFC		(NS_TO_CLK(DDR_tRFC) + 1)
+#define DMC_DDR_t_RFC		(NS_TO_CLK(DDR_tRFC))
 #define DMC_DDR_schedule_RFC	((DMC_DDR_t_RFC - 3) << 5)
 /* 4, 5(TRM) Min 22.5ns */
-#define DMC_DDR_t_RP		(NS_TO_CLK(DDR_tRP) + 1)
+#define DMC_DDR_t_RP		(NS_TO_CLK(DDR_tRP))
 #define DMC_DDR_schedule_RP	((DMC_DDR_t_RP - 3) << 3)
 /* 3, Min 15ns */
-#define DMC_DDR_t_RRD		(NS_TO_CLK(DDR_tRRD) + 1)
+#define DMC_DDR_t_RRD		(NS_TO_CLK(DDR_tRRD))
 /* Min 15ns */
-#define DMC_DDR_t_WR		(NS_TO_CLK(DDR_tWR) + 1)
-#define DMC_DDR_t_WTR		2
+#define DMC_DDR_t_WR		(NS_TO_CLK(DDR_tWR))
+#define DMC_DDR_t_WTR		7
 /* 1tck + tIS(1.5ns) */
 #define DMC_DDR_t_XP		2
 /* 17, Min 120ns */
-#define DMC_DDR_t_XSR		(NS_TO_CLK(DDR_tXSR) + 1)
+#define DMC_DDR_t_XSR		(NS_TO_CLK(DDR_tXSR))
 #define DMC_DDR_t_ESR		DMC_DDR_t_XSR
 /* TRM 2656 */
 #define DMC_DDR_REFRESH_PRD	(NS_TO_CLK(DDR_tREFRESH))

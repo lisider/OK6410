@@ -93,10 +93,10 @@ mem_ctrl_asm_init:
 
 	ldr	r1, =DMC1_CHIP0_CFG
 	str	r1, [r0, #INDEX_DMC_CHIP_0_CFG]
-
+/*
 	ldr	r1, =DMC_DDR_32_CFG
 	str	r1, [r0, #INDEX_DMC_USER_CONFIG]
-
+*/
 	/* DMC0 DDR Chip 0 configuration direct command reg */
 	ldr	r1, =DMC_NOP0
 	str	r1, [r0, #INDEX_DMC_DIRECT_CMD]
@@ -117,6 +117,9 @@ mem_ctrl_asm_init:
 	/* Mode Reg */
 	ldr	r1, =DMC_mDDR_MR0
 	str	r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+	ldr r1, =0x0
+	str r1, [ELFIN_MEM_SYS_CFG]
 
 	/* Enable DMC1 */
 	mov	r1, #0x0
