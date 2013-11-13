@@ -135,7 +135,7 @@
 #define CONFIG_SYS_BARGSIZE		CONFIG_SYS_CBSIZE	/* Boot Argument Buffer Size  */
 
 #define CONFIG_SYS_MEMTEST_START	CONFIG_SYS_SDRAM_BASE	/* memtest works on	      */
-#define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_SDRAM_BASE + 0x7e00000) /* 126MB in DRAM */
+#define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_SDRAM_BASE + 0xfe00000) /* 252MB in DRAM */
 
 #define CONFIG_SYS_LOAD_ADDR		CONFIG_SYS_SDRAM_BASE	/* default load address	*/
 
@@ -163,7 +163,7 @@
 /* OK6410 has 2 banks of DRAM, but we use only one in U-Boot */
 #define CONFIG_NR_DRAM_BANKS	1
 #define PHYS_SDRAM_1		CONFIG_SYS_SDRAM_BASE	/* SDRAM Bank #1	*/
-#define PHYS_SDRAM_1_SIZE	0x08000000	/* 128 MB in Bank #1	*/
+#define PHYS_SDRAM_1_SIZE	0x10000000	/* 256 MB in Bank #1	*/
 
 #define CONFIG_SYS_FLASH_BASE		0x10000000
 #define CONFIG_SYS_MONITOR_BASE	0x00000000
@@ -196,7 +196,7 @@
 #define CONFIG_IDENT_STRING	" for OK6410"
 
 /* base address for uboot */
-#define CONFIG_SYS_PHY_UBOOT_BASE	(CONFIG_SYS_SDRAM_BASE + 0x07e00000)
+#define CONFIG_SYS_PHY_UBOOT_BASE	(CONFIG_SYS_SDRAM_BASE + 0x0fe00000)
 /* total memory available to uboot */
 #define CONFIG_SYS_UBOOT_SIZE		(1024 * 1024)
 
@@ -214,7 +214,7 @@
 #endif
 
 /* NAND U-Boot load and start address */
-#define CONFIG_SYS_UBOOT_BASE		(CONFIG_SYS_MAPPED_RAM_BASE + 0x07e00000)
+#define CONFIG_SYS_UBOOT_BASE		(CONFIG_SYS_MAPPED_RAM_BASE + 0x0fe00000)
 
 #define CONFIG_ENV_OFFSET		0x0040000
 
@@ -231,15 +231,15 @@
 #define CONFIG_SYS_NAND_U_BOOT_DST	CONFIG_SYS_PHY_UBOOT_BASE	/* NUB load-addr      */
 #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_NAND_U_BOOT_DST	/* NUB start-addr     */
 
-#define CONFIG_SYS_NAND_U_BOOT_OFFS	(4 * 1024)	/* Offset to RAM U-Boot image */
-#define CONFIG_SYS_NAND_U_BOOT_SIZE	(252 * 1024)	/* Size of RAM U-Boot image   */
+#define CONFIG_SYS_NAND_U_BOOT_OFFS	(16 * 1024)	/* Offset to RAM U-Boot image */
+#define CONFIG_SYS_NAND_U_BOOT_SIZE	(512 * 1024)	/* Size of RAM U-Boot image   */
 
 /* NAND chip page size		*/
-#define CONFIG_SYS_NAND_PAGE_SIZE	2048
+#define CONFIG_SYS_NAND_PAGE_SIZE	4096
 /* NAND chip block size		*/
-#define CONFIG_SYS_NAND_BLOCK_SIZE	(128 * 1024)
+#define CONFIG_SYS_NAND_BLOCK_SIZE	(128 * 4096)
 /* NAND chip page per block count  */
-#define CONFIG_SYS_NAND_PAGE_COUNT	64
+#define CONFIG_SYS_NAND_PAGE_COUNT	128
 /* Location of the bad-block label */
 #define CONFIG_SYS_NAND_BAD_BLOCK_POS	0
 /* Extra address cycle for > 128MiB */
@@ -250,7 +250,7 @@
 /* Number of ECC bytes per OOB - S3C6410 calculates 4 bytes ECC in 1-bit mode */
 #define CONFIG_SYS_NAND_ECCBYTES	4
 /* Size of a single OOB region */
-#define CONFIG_SYS_NAND_OOBSIZE	64
+#define CONFIG_SYS_NAND_OOBSIZE	218
 /* ECC byte positions */
 #define CONFIG_SYS_NAND_ECCPOS		{40, 41, 42, 43, 44, 45, 46, 47, \
 				 48, 49, 50, 51, 52, 53, 54, 55, \

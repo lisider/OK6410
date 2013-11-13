@@ -189,24 +189,25 @@ static int nand_read_page(struct mtd_info *mtd, int block, int page, uchar *dst)
 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
 		this->ecc.hwctl(mtd, NAND_ECC_READ);
 		this->read_buf(mtd, p, eccsize);
-		this->ecc.calculate(mtd, p, &ecc_calc[i]);
+//		this->ecc.calculate(mtd, p, &ecc_calc[i]);
 	}
-	this->read_buf(mtd, oob_data, CONFIG_SYS_NAND_OOBSIZE);
+//	this->read_buf(mtd, oob_data, CONFIG_SYS_NAND_OOBSIZE);
 
 	/* Pick the ECC bytes out of the oob data */
-	for (i = 0; i < ECCTOTAL; i++)
-		ecc_code[i] = oob_data[nand_ecc_pos[i]];
+//	for (i = 0; i < ECCTOTAL; i++)
+//		ecc_code[i] = oob_data[nand_ecc_pos[i]];
 
-	eccsteps = ECCSTEPS;
-	p = dst;
+//	eccsteps = ECCSTEPS;
+//	p = dst;
 
-	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+
+//	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
 		/* No chance to do something with the possible error message
 		 * from correct_data(). We just hope that all possible errors
 		 * are corrected by this routine.
 		 */
-		this->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
-	}
+//		this->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+//	}
 
 	return 0;
 }
