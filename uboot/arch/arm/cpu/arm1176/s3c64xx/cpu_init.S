@@ -119,7 +119,8 @@ mem_ctrl_asm_init:
 	str	r1, [r0, #INDEX_DMC_DIRECT_CMD]
 
 	ldr r1, =0x0
-	str r1, [ELFIN_MEM_SYS_CFG]
+	ldr r2, =ELFIN_MEM_SYS_CFG
+	str r1, [r2]
 
 	/* Enable DMC1 */
 	mov	r1, #0x0
