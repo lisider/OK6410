@@ -32,6 +32,6 @@
 
 void board_init_f(unsigned long bootflag)
 {
-	relocate_code(CONFIG_SYS_TEXT_BASE - TOTAL_MALLOC_LEN, NULL,
+	relocate_code(0x54000000, NULL,
 			CONFIG_SYS_TEXT_BASE);
 }
