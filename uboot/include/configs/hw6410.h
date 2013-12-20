@@ -36,9 +36,9 @@
  * High Level Configuration Options
  * (easy to change)
  */
-#define CONFIG_S3C6400		1	/* in a SAMSUNG S3C6400 SoC     */
+#define CONFIG_S3C6410		1	/* in a SAMSUNG S3C6400 SoC     */
 #define CONFIG_S3C64XX		1	/* in a SAMSUNG S3C64XX Family  */
-#define CONFIG_SMDK6400		1	/* on a SAMSUNG SMDK6400 Board  */
+#define CONFIG_HW6410		1	/* on a SAMSUNG SMDK6400 Board  */
 
 #define CONFIG_PERIPORT_REMAP
 #define CONFIG_PERIPORT_BASE	0x70000000
