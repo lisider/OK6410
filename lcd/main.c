@@ -4,18 +4,17 @@
 void main(void)
 {
 	unsigned char c;
-	static int lcdon = 0;
-	static int dispon = 0;
 
 	lcd_init();
-
+	lcd_on();
+	displaycon_on();
 	while(1)
 	{
 		put_s("********LCD TEST MENU********\n\r");
-		put_s("[L] enable/disable LCD\n\r");
-		put_s("[C] enable/disable s3c6410 display controller\n\r");
-		put_s("[D] display color\n\r");
-		put_s("[Q] quit\n\r");
+		put_s("[P] Draw a Point\n\r");
+		put_s("[L] Draw a Line\n\r");
+		put_s("[M] Draw a Mire\n\r");
+		put_s("[C] Clear the Src\n\r");
 		
 		do {
 			c = get_c();
@@ -33,48 +32,28 @@ void main(void)
 			case 'l':
 			case 'L':
 			{
-				if (lcdon)
-				{
-					lcd_off();
-					put_s("LCD off\n\r");
-				}
-				else
-				{
-					lcd_on();
-					put_s("LCD on\n\r");
-				}
-				lcdon = !lcdon;
+				DrawLine(100, 100, 200, 200, 0xff00);
 				break;
 			}
 
 			case 'c':
 			case 'C':
 			{
-				if (dispon)
-				{
-					displaycon_off();
-					put_s("Display controller off\n\r");
-				}
-				else
-				{
-					displaycon_on();
-					put_s("Display controller on\n\r");
-				}
-				dispon = !dispon;
+				ClearScr(0xffffff);
 				break;
 			}
 
-			case 'd':
-			case 'D':
+			case 'p':
+			case 'P':
 			{
-				display_red();
+				PutPixel(100, 100, 0xff00);
 				break;
 			}
 
-			case 'q':
-			case 'Q':
+			case 'M':
+			case 'm':
 			{
-				return ;
+				Mire();
 				break;
 			}
 
