@@ -165,7 +165,7 @@ void lcd_init(void)
 
 }
 
-void lcd_on(void)
+void lcd_light_on(void)
 {
 	GPFDAT |= (1<<14);
 }

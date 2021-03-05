@@ -6,7 +6,7 @@ void main(void)
 	unsigned char c;
 
 	lcd_init();
-	lcd_on();
+	lcd_light_on();
 	displaycon_on();
 	while(1)
 	{
