@@ -15,7 +15,7 @@ _start:
 
 
 /* stack setup */
-	ldr sp, =8*1024
+	ldr sp, =0x0c002000
 
 	
 	bl clock_init  	/* clock init */
