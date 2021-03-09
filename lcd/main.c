@@ -8,6 +8,8 @@ void main(void)
 	lcd_init();
 	lcd_light_on();
 	displaycon_on();
+
+	display_lcd_config();
 	while(1)
 	{
 		put_s("********LCD TEST MENU********\n\r");

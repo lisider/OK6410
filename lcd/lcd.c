@@ -63,7 +63,7 @@
 #define  VBPD         1
 #define  VFPD          1
 
-#define  HSPW        40
+#define  HSPW        41
 #define  HBPD         1
 #define  HFPD         1
 
@@ -102,12 +102,17 @@ void lcd_init(void)
 	VIDCON0 &= ~((3<<26) | (3<<17) | (0xff<<6)  | (3<<2));     /* RGB I/F, RGB Parallel format,  */
 	// (2<<6) 	// VCLK = Video Clock source/3 , CLKVAL = 2
 	// (1<<4) 	// clock source  Divided by CLKVAL_F
-	/* vclk== HCLK / (CLKVAL+1) = 133/15 = 9MHz */ // ???
 	// vclk== HCLK / (CLKVAL+1) = 133/3 = 44.3MHz
-	VIDCON0 |= ((2<<6) | (1<<4) ); 
+	VIDCON0 |= ((2<<6) | (1<<4) );
+	// VIDCON0[3:2] = 0b00 	=> Video Clock source = HCLK
+	// VIDCON0[4] = 1 		=> Divided by CLKVAL_F
+	// VIDCON0[13:6] = 2 	=> VCLK = Video Clock Source / (CLKVAL+1)  = HCLK/3
+	// HCLK = 133MHZ
+	// VCLK = 44.3HZ
 
 	// Disable the video output and the Display control signal
-	VIDCON0 &= ~(0x3);
+	// the value is 0 when reset
+	// VIDCON0 &= ~(0x3);
 
 
 	/*LCD driver gets the video data at VCLK falling edge */
@@ -207,4 +212,52 @@ static void display_red(void)
 	color_idx++;
 	if (color_idx == 5)
 		color_idx = 0;
+}
+
+
+void display_lcd_config(){
+
+	put_s("LCD CONFIG START\n\r");
+	put_s("GPECON\n\r");
+	put_h(GPECON);
+	put_s("GPEDAT\n\r");
+	put_h(GPEDAT);
+	put_s("GPFCON\n\r");
+	put_h(GPFCON);
+	put_s("GPFDAT\n\r");
+	put_h(GPFDAT);
+	put_s("GPICON\n\r");
+	put_h(GPICON);
+	put_s("GPJCON\n\r");
+	put_h(GPJCON);
+	put_s("MIFPCON\n\r");
+	put_h(MIFPCON);
+	put_s("SPCON\n\r");
+	put_h(SPCON);
+	put_s("VIDCON0\n\r");
+	put_h(VIDCON0);
+	put_s("VIDCON1\n\r");
+	put_h(VIDCON1);
+	put_s("VIDTCON0\n\r");
+	put_h(VIDTCON0);
+	put_s("VIDTCON1\n\r");
+	put_h(VIDTCON1);
+	put_s("VIDTCON2\n\r");
+	put_h(VIDTCON2);
+	put_s("WINCON0\n\r");
+	put_h(WINCON0);
+	put_s("VIDOSD0A\n\r");
+	put_h(VIDOSD0A);
+	put_s("VIDOSD0B\n\r");
+	put_h(VIDOSD0B);
+	put_s("VIDOSD0C\n\r");
+	put_h(VIDOSD0C);
+	put_s("VIDW00ADD0B0\n\r");
+	put_h(VIDW00ADD0B0);
+	put_s("VIDW00ADD1B0\n\r");
+	put_h(VIDW00ADD1B0);
+	put_s("VIDW00ADD2\n\r");
+	put_h(VIDW00ADD2);
+	put_s("LCD CONFIG END\n\r");
+
 }

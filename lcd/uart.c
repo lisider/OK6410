@@ -57,3 +57,92 @@ void put_s(unsigned char *str)
 }
 
 
+// 对int类型的封装
+
+char crtn1[32] = {0};
+static void * memcpy(void * dest,const void *src,unsigned int count)
+{
+    char *tmp = (char *) dest, *s = (char *) src;
+	while (count--){
+        *tmp++ = *s++;
+	}
+    return dest;
+}
+
+char* int2str(unsigned int values)
+{
+	const char digits[11] = "0123456789";
+	char *crtn = crtn1;
+	crtn += 31;
+	*crtn = '\0';
+	do
+	{
+		*--crtn = digits[values%10];
+	} while (values /= 10);
+
+	return crtn;
+}
+
+
+
+void put_i(int num){
+	char * p = int2str(num);
+	put_s(p);
+	return ;
+}
+
+
+// 打印hex类型
+
+char* int2hexstr(unsigned int values)
+{
+	const char digits[17] = "0123456789ABCDEF";
+	char *crtn = crtn1;
+	crtn += 31;
+	*crtn = '\0';
+	do
+	{
+		*--crtn = digits[values%16];
+	} while (values /= 16);
+
+	return crtn;
+}
+
+void put_h(int num){
+	char * p = int2hexstr(num);
+	put_s("0x");
+	put_s(p);
+	put_s("\n\r");
+	return ;
+}
+
+#if 0
+
+void uart_sample(void){
+
+	uart_init();
+
+
+	put_s("Welcome use uart!\n\r");
+	put_i(10);
+	put_h(0x25698);
+
+
+	unsigned char ch;
+	for(;;)
+	{
+		ch = get_c();
+		if(ch == '\r'){
+			put_s("\n\r");
+			put_c('>');
+		}
+		else{
+			put_s("\n\r");
+			put_s("your input is :\n\r");
+			put_c(ch);
+			put_s("\n\r");
+			put_c('>');
+		}
+	}
+}
+#endif
