@@ -1,5 +1,5 @@
-lcd.bin: start.o clock.o uart.o lcd.o sdram.o main.o framebuffer.o
-	arm-linux-ld -Ttext 0x0c000000 -o lcd.elf  start.o uart.o  clock.o lcd.o sdram.o main.o framebuffer.o
+lcd.bin: start.o clock.o uart.o lcd.o sdram.o main.o framebuffer.o blue.o
+	arm-linux-ld -Ttext 0x0c000000 -o lcd.elf  start.o uart.o  clock.o lcd.o sdram.o main.o framebuffer.o blue.o
 	arm-linux-objcopy -O binary lcd.elf lcd.bin
 	arm-linux-objdump -D lcd.elf > lcd.dis
 
@@ -15,6 +15,10 @@ sdram.o : sdram.c
 	arm-linux-gcc -o sdram.o sdram.c -c -nostdlib
 main.o : main.c
 	arm-linux-gcc -o main.o main.c -c -nostdlib
+
+blue.o : blue.c
+	arm-linux-gcc -o blue.o blue.c -c -nostdlib
+
 framebuffer.o : framebuffer.c
 	arm-linux-gcc -o framebuffer.o framebuffer.c -c -nostdlib
 

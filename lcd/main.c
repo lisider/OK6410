@@ -17,7 +17,7 @@ void main(void)
 		put_s("[L] Draw a Line\n\r");
 		put_s("[M] Draw a Mire\n\r");
 		put_s("[C] Clear the Src\n\r");
-		
+		put_s("[B] BLue  the Src\n\r");
 		do {
 			c = get_c();
 			if (c == '\n' || c == '\r')
@@ -56,6 +56,13 @@ void main(void)
 			case 'm':
 			{
 				Mire();
+				break;
+			}
+
+			case 'B':
+			case 'b':
+			{
+				Blue();
 				break;
 			}
 
